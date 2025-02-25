@@ -3,10 +3,11 @@ Should work with other x86 based mini-pcs as well. Using Docker so everything ru
 ---------
 1) Install Alpine Linux, get a network connection.
 2) Install Docker and Docker Compose (uncomment community repository in /etc/apk/repositories)
-   i) apk update
-   ii) apk add docker docker-compose
-   iii) rc-update add docker default
-   iv) service docker start
+
+- apk update
+- apk add docker docker-compose
+- rc-update add docker default
+- service docker start
 
 3) pull repo, add dirs for roon and spotify
 4) docker load < roon-bridge.tar.gz
