@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  roon-bridge:
+    container_name: roon-bridge
+    # build: .
+    image: roon-bridge:small
+    restart: unless-stopped
+    network_mode: "host"  # Ensures proper discovery in Roon
+    volumes:
+      - ./roon:/var/roon  # Persistent storage for Roon Bridge
+    devices:
+      - /dev/snd:/dev/snd  # Allows access to ALSA sound devices
+      - /dev/bus/usb:/dev/bus/usb  # Pass USB access for DAC
+    environment:
+      - PULSE_SERVER=unix:/run/user/1000/pulse/native  # If using PulseAudio
+    #command: >
+    #  bash -c "
+    #  apt update &&
+    #  apt install -y curl alsa-utils libasound2 dbus mono-runtime bzip2 &&
+    #  cd /opt/&&
+    #  curl -O https://download.roonlabs.net/builds/RoonBridge_linuxx64.tar.bz2 &&
+    #  tar -xjf RoonBridge_linuxx64.tar.bz2 &&
+    #  /opt/RoonBridge/start.sh"
+  spotify:
+    container_name: spotify-connect
+    image: tmigone/librespot:0.3.1-amd64
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - ./spotify:/var/cache/raspotify  # Persistent storage for Roon Bridge
+    devices:
+      - /dev/snd:/dev/snd  # Use the same DAC as Roon Bridge
+    command: >
+      /usr/bin/librespot
+      --name "thinclient"
+      --backend alsa
+      --device hw:1,0
+      --bitrate 320
