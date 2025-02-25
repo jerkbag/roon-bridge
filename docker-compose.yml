@@ -3,7 +3,6 @@ version: "3.8"
 services:
   roon-bridge:
     container_name: roon-bridge
-    # build: .
     image: roon-bridge:small
     restart: unless-stopped
     network_mode: "host"  # Ensures proper discovery in Roon
@@ -23,7 +22,7 @@ services:
       - /dev/snd:/dev/snd  # Use the same DAC as Roon Bridge
     command: >
       /usr/bin/librespot
-      --name "thinclient"
+      # --name "thinclient"
       --backend alsa
       --device hw:1,0
       --bitrate 320
